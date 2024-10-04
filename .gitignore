@@ -1,0 +1,109 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual environment directories
+env/
+venv/
+ENV/
+VENV/
+env.bak/
+venv.bak/
+.virtualenv/
+.venv/
+
+# Environment variables and secret keys
+.env
+.env.local
+.env.*.local
+*.env
+apikeys.txt
+config.ini
+
+# macOS files
+.DS_Store
+
+# Streamlit cache directories
+.streamlit/
+
+# Jupyter Notebook checkpoints (if any)
+.ipynb_checkpoints
+
+# Logs and debug files
+logs/
+*.log
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Visual Studio Code settings (if using VSCode)
+.vscode/
+
+# IDE files
+.idea/
+
+# Sublime Text files
+*.sublime-project
+*.sublime-workspace
+
+# Vim swap files
+*.swp
+
+# Emacs files
+*~ 
+\#*\#
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+
+# Database files
+*.sqlite3
+
+# Other
+*.bak
+*.orig
