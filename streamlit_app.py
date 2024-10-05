@@ -142,16 +142,31 @@ def main():
             st.sidebar.markdown(f"### Description of {indicator_to_describe}")
             st.sidebar.markdown(description)
 
+# Function to fetch stock data from yfinance
 def fetch_stock_data(ticker, start_date, end_date):
     data = yf.download(ticker, start=start_date, end=end_date)
     return data
 
+# Function to calculate technical indicators
 def calculate_technical_indicators(data):
     data = dropna(data)
-    data = add_all_ta_features(
-        data, open="Open", high="High", low="Low", close="Close", volume="Volume")
+
+    # Ensure there are enough data points for technical indicators like ADX
+    if len(data) < 14:  # ADX requires at least 14 data points
+        st.warning("Not enough data points to calculate some technical indicators like ADX. Only calculating basic indicators.")
+        return data
+
+    # Calculate all technical indicators if there are enough data points
+    try:
+        data = add_all_ta_features(
+            data, open="Open", high="High", low="Low", close="Close", volume="Volume"
+        )
+    except Exception as e:
+        st.error(f"Error calculating technical indicators: {e}")
+    
     return data
 
+# Function to fetch news related to the stock
 def get_news(company_name):
     # Load environment variables from .env file
     news_api_key = os.getenv("NEWS_API_KEY")
@@ -160,7 +175,6 @@ def get_news(company_name):
         st.error("News API key not found. Please set NEWS_API_KEY in your .env file.")
         return []
 
-    # Adjust the query to include the company name in quotes for exact matching
     query = f'"{company_name}"'
 
     # Use NewsAPI to fetch news articles
@@ -176,21 +190,22 @@ def get_news(company_name):
     response = requests.get(url)
     if response.status_code == 200:
         articles = response.json().get('articles', [])
-        # Filter articles that mention the company name
+        # Handle None for 'description'
         news = [
             {
                 'title': article['title'],
-                'description': article['description'] or '',
+                'description': article['description'] or '',  # Use empty string if description is None
                 'url': article['url']
             }
             for article in articles
-            if company_name.lower() in (article['title'] + article['description']).lower()
+            if company_name.lower() in (article['title'] + (article['description'] or '')).lower()  # Safe concatenation
         ]
         return news
     else:
         st.error(f"Error fetching news: {response.status_code}")
         return []
 
+# Function to get recommendation from GPT-4
 def get_recommendation_gpt4(ticker_input, exchange, technicals, news):
     # Load environment variables from .env file
     openai_api_key = os.getenv("OPENAI_API_KEY")
